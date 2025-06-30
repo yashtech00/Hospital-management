@@ -35,3 +35,20 @@ export const Appointments = async (req:any, res:any) => {
         return res.status(500).json("Internal server error while fetching appointments");
     }
 }
+
+
+export const DeleteAppointment = async (req: any, res: any) => {
+    try {
+        const appointmentId = req.params.id;
+        if (!appointmentId) {
+            return res.status(404).json("Wrong appointment Id");
+        }
+        const deleteAppoint = await AppointmentModel.deleteOne(appointmentId);
+        return res.status(200).json("appointment deleted successfully");
+    } catch (e:any) {
+        console.error(e.message);
+        return res.status(500).json({
+            error:"Internal server error while deleting appointment"
+        })
+    }
+}
