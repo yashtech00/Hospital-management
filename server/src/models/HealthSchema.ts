@@ -12,10 +12,17 @@ const HealthSchema = new Schema({
         type: String,
         required: true,
     },
-    currentMedication: {
-        type: String,
-        required: true
-    },
+    Medication: [{
+        name: {
+           type:String
+        },
+        dosage: {
+            type:String
+        },
+        frequency: {
+            type:String
+        }
+    }],
     upcomingAppointment: {
         type: String,
         required: true,
@@ -34,13 +41,18 @@ const HealthSchema = new Schema({
     notes: {
       type:String  
     },
-    createdAt: {
-        type: Date,
-        default: Date.now,
+    healthStatus: {
+        type: String,
+        enum: ["stable", "critical", "Under Observation", "Recovering"],
+        default:"stable",
     },
-    updatedAt: {
-        type: Date,
-        default:Date.now,
+    reports: [{
+        reportType: String,
+        fileUrl:String
+    }],
+    lastUpdatedBy: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref:"user",
     }
 },{timestamps:true} );
 
