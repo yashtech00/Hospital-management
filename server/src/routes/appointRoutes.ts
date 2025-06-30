@@ -1,10 +1,11 @@
 import express from "express";
 import { Appointments, BookAppointment, DeleteAppointment } from "../controllers/appoint";
+import Authentication from "../lib/Authentication";
 
  const router = express.Router();
 
-router.get("/appointments", Appointments)
-router.post("/book", BookAppointment);
-router.delete("/appointment", DeleteAppointment)
+router.get("/appointments",Authentication, Appointments)
+router.post("/book",Authentication, BookAppointment);
+router.delete("/appointment",Authentication, DeleteAppointment)
 
 export default router;

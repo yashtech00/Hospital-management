@@ -1,5 +1,6 @@
 import express from "express";
 import { GetMe, Login, Signup } from "../controllers/auth";
+import Authentication from "../lib/Authentication";
 
  const router = express.Router();
 
@@ -7,6 +8,6 @@ import { GetMe, Login, Signup } from "../controllers/auth";
 router.post("/login", Login);
 router.post("/signup", Signup);
 
-router.get("/user", GetMe);
+router.get("/user",Authentication, GetMe);
 
 export default router;
