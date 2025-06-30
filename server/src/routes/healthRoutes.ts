@@ -3,7 +3,9 @@ import { Health, HealthSummary } from "../controllers/Health";
 
 
 
-const router = express.Router();
+ const router = express.Router();
 
 router.post("/healthSummary", HealthSummary);
 router.get("/dashboard/:id", Health);
+
+export default router;

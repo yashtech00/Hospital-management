@@ -64,3 +64,19 @@ export const Login = async (req: any, res: any) => {
       .json({ message: "Internal server error while Login" });
   }
 };
+
+
+export const GetMe = async (req: any, res: any) => {
+  try {
+    const me = await UserModel.find();
+    return res.status(200).json(
+      { message: "user detail fetch successfully" },
+      {data:me}
+    )
+  } catch (e:any) {
+    console.error(e.message);
+    return res.status(500).json(
+      {error:"Internal server error while fetching user details"}
+    )
+  }
+}
