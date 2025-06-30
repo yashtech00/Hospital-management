@@ -1,3 +1,4 @@
+import { GenerateToken } from "../lib/GenerateCookies";
 import UserModel from "../models/UserSchema";
 import { LoginProp, SignupProp } from "../type/userSchema";
 import bcyrpt from "bcrypt";
@@ -23,6 +24,8 @@ export const Signup = async (req: any, res: any) => {
       password: hashedPassword,
       role: SignupPayload.role,
     });
+
+    GenerateToken(NewUser._id, res);
 
     return res.status(200).json({ message: "User registered", data: NewUser });
   } catch (err) {
@@ -55,6 +58,7 @@ export const Login = async (req: any, res: any) => {
     if (!isPassword) {
       return res.status(404).json({ message: "Password is wrong" });
     }
+    GenerateToken(user._id, res);
 
     return res.status(200).json({ message: "User Logged In", data: user });
   } catch (err) {
