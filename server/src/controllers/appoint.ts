@@ -26,11 +26,12 @@ export const BookAppointment = async (req: any, res: any) => {
 }
 
 
-export const Appointments = async (req:any, res::any) => {
+export const Appointments = async (req:any, res:any) => {
     try {
         const Appoint = await AppointmentModel.find()
-        return res.json("")
+        return res.status(200).json("fetched appointments", Appoint);
     } catch (e) {
-        
+        console.error(e);
+        return res.status(500).json("Internal server error while fetching appointments");
     }
 }
