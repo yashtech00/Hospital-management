@@ -54,6 +54,9 @@ export const Login = async (req: any, res: any) => {
         .status(411)
         .json({ message: "User not register , go for signup" });
     }
+    if (user.role != LoginPayload.role) {
+      return res.status(405).json({message:"User do not have permission"})
+    }
     const isPassword = await bcyrpt.compare(
       LoginPayload.password,
       user.password

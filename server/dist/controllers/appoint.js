@@ -18,40 +18,57 @@ const AppointmentProp_1 = require("../type/AppointmentProp");
 const BookAppointment = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const appointPayload = req.body;
-        const docId = req.params.id;
         const appointParsed = AppointmentProp_1.appointProp.safeParse(appointPayload);
-        if (!appointParsed) {
-            return res.status(500).json("Wrong id of patient or doctor");
+        if (req.user.role != "patient") {
+            return res.status(405).json("User not allowed to book appointments");
         }
+        if (!appointParsed.success) {
+            return res.status(400).json({
+                error: "Invalid data",
+                details: appointParsed.error.errors,
+            });
+        }
+        const { doctorId } = appointParsed.data;
         const newAppoint = yield AppointmentSchema_1.default.create({
-            patientId: appointPayload.patientId,
-            doctorId: docId,
-            Date: appointPayload.date
+            patientId: req.user._id,
+            doctorId: doctorId,
         });
-        return res.status(200).json("Appointment booked", { data: newAppoint });
+        return res
+            .status(200)
+            .json({ message: "Appointment booked successfully", data: newAppoint });
     }
     catch (e) {
         console.error(e);
-        return res.status(500).json("internal server error while booking appointment");
+        return res
+            .status(500)
+            .json("internal server error while booking appointment");
     }
 });
 exports.BookAppointment = BookAppointment;
 const Appointments = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const Appoint = yield AppointmentSchema_1.default.find();
-        return res.status(200).json("fetched appointments", Appoint);
+        const Appoint = yield AppointmentSchema_1.default.find().populate('patientId');
+        if (req.user.role != "doctor") {
+            return res.status(405).json("User not allowed to book appointments");
+        }
+        return res.status(200).json({ message: "fetched appointments", data: Appoint });
     }
     catch (e) {
         console.error(e);
-        return res.status(500).json("Internal server error while fetching appointments");
+        return res
+            .status(500)
+            .json("Internal server error while fetching appointments");
     }
 });
 exports.Appointments = Appointments;
 const DeleteAppointment = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const appointmentId = req.params.id;
-        if (!appointmentId) {
-            return res.status(404).json("Wrong appointment Id");
+        if (req.user.role != "patient") {
+            return res.status(405).json("User not allowed to book appointments");
+        }
+        if (!appointmentId.success) {
+            return res.status(404).json("Invalid data");
         }
         const deleteAppoint = yield AppointmentSchema_1.default.deleteOne(appointmentId);
         return res.status(200).json("appointment deleted successfully");
@@ -59,7 +76,7 @@ const DeleteAppointment = (req, res) => __awaiter(void 0, void 0, void 0, functi
     catch (e) {
         console.error(e.message);
         return res.status(500).json({
-            error: "Internal server error while deleting appointment"
+            error: "Internal server error while deleting appointment",
         });
     }
 });

@@ -62,6 +62,9 @@ const Login = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
                 .status(411)
                 .json({ message: "User not register , go for signup" });
         }
+        if (user.role != LoginPayload.role) {
+            return res.status(405).json({ message: "User do not have permission" });
+        }
         const isPassword = yield bcrypt_1.default.compare(LoginPayload.password, user.password);
         if (!isPassword) {
             return res.status(404).json({ message: "Password is wrong" });
