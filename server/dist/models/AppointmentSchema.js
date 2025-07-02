@@ -21,5 +21,5 @@ const AppointmentSchema = new Schema({
         required: true
     },
 }, { timestamps: true });
-const AppointmentModel = mongoose_1.default.model("user", AppointmentSchema);
+const AppointmentModel = mongoose_1.default.model("appoint", AppointmentSchema);
 exports.default = AppointmentModel;

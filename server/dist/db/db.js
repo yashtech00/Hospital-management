@@ -16,11 +16,13 @@ function mongo() {
             .then(() => {
             console.log("mongodb is connected");
         })
-            .catch(() => {
-            console.log("mongodb is disconnected");
+            .catch((e) => {
+            console.log("mongodb is disconnected", e);
+            throw e;
         });
     }
     catch (err) {
         console.error(err);
+        throw err;
     }
 }
