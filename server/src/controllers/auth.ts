@@ -6,12 +6,16 @@ import bcyrpt from "bcrypt";
 export const Signup = async (req: any, res: any) => {
   try {
     const SignupPayload = req.body;
+    console.log(SignupPayload, "");
+
     const SignupParsed = SignupProp.safeParse(SignupPayload);
     if (!SignupParsed) {
       return res.status(400).message("Invalid user details");
     }
 
-    const existingUser = await UserModel.findById(SignupPayload.email);
+    const existingUser = await UserModel.findOne({
+      email: SignupPayload.email,
+    });
     if (existingUser) {
       return res.status(411).json({ message: "Already register,go for login" });
     }
@@ -31,7 +35,7 @@ export const Signup = async (req: any, res: any) => {
   } catch (err) {
     console.error(err);
     return res
-      .status(200)
+      .status(500)
       .json({ message: "Internal server error while signup" });
   }
 };
@@ -44,7 +48,7 @@ export const Login = async (req: any, res: any) => {
       return res.status(400).message("Invalid user details");
     }
 
-    const user = await UserModel.findById(LoginPayload.email);
+    const user = await UserModel.findOne({ email: LoginPayload.email });
     if (!user) {
       return res
         .status(411)
@@ -64,23 +68,32 @@ export const Login = async (req: any, res: any) => {
   } catch (err) {
     console.error(err);
     return res
-      .status(200)
+      .status(500)
       .json({ message: "Internal server error while Login" });
   }
 };
 
+export const Logout = async (req: any, res: any) => {
+  try {
+    res.cookie("jwt", " ", { maxAge: 0 });
+    res.status(200).json({ message: "Logout successfully" });
+  } catch (e) {
+    console.error(e);
+    throw e;
+    
+  }
+}
 
 export const GetMe = async (req: any, res: any) => {
   try {
-    const me = await UserModel.find();
-    return res.status(200).json(
-      { message: "user detail fetch successfully" },
-      {data:me}
-    )
-  } catch (e:any) {
+    const me = await UserModel.findById(req.user._id).select("-password");
+    return res
+      .status(200)
+      .json({ message: "user detail fetch successfully", data: me });
+  } catch (e: any) {
     console.error(e.message);
-    return res.status(500).json(
-      {error:"Internal server error while fetching user details"}
-    )
+    return res
+      .status(500)
+      .json({ error: "Internal server error while fetching user details" });
   }
-}
+};

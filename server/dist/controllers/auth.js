@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.GetMe = exports.Login = exports.Signup = void 0;
+exports.GetMe = exports.Logout = exports.Login = exports.Signup = void 0;
 const GenerateCookies_1 = require("../lib/GenerateCookies");
 const UserSchema_1 = __importDefault(require("../models/UserSchema"));
 const userProp_1 = require("../type/userProp");
@@ -20,11 +20,14 @@ const bcrypt_1 = __importDefault(require("bcrypt"));
 const Signup = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const SignupPayload = req.body;
+        console.log(SignupPayload, "");
         const SignupParsed = userProp_1.SignupProp.safeParse(SignupPayload);
         if (!SignupParsed) {
             return res.status(400).message("Invalid user details");
         }
-        const existingUser = yield UserSchema_1.default.findById(SignupPayload.email);
+        const existingUser = yield UserSchema_1.default.findOne({
+            email: SignupPayload.email,
+        });
         if (existingUser) {
             return res.status(411).json({ message: "Already register,go for login" });
         }
@@ -41,7 +44,7 @@ const Signup = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     catch (err) {
         console.error(err);
         return res
-            .status(200)
+            .status(500)
             .json({ message: "Internal server error while signup" });
     }
 });
@@ -53,7 +56,7 @@ const Login = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         if (!LoginParsed) {
             return res.status(400).message("Invalid user details");
         }
-        const user = yield UserSchema_1.default.findById(LoginPayload.email);
+        const user = yield UserSchema_1.default.findOne({ email: LoginPayload.email });
         if (!user) {
             return res
                 .status(411)
@@ -69,19 +72,34 @@ const Login = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     catch (err) {
         console.error(err);
         return res
-            .status(200)
+            .status(500)
             .json({ message: "Internal server error while Login" });
     }
 });
 exports.Login = Login;
+const Logout = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        res.cookie("jwt", " ", { maxAge: 0 });
+        res.status(200).json({ message: "Logout successfully" });
+    }
+    catch (e) {
+        console.error(e);
+        throw e;
+    }
+});
+exports.Logout = Logout;
 const GetMe = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const me = yield UserSchema_1.default.find();
-        return res.status(200).json({ message: "user detail fetch successfully" }, { data: me });
+        const me = yield UserSchema_1.default.findById(req.user._id).select("-password");
+        return res
+            .status(200)
+            .json({ message: "user detail fetch successfully", data: me });
     }
     catch (e) {
         console.error(e.message);
-        return res.status(500).json({ error: "Internal server error while fetching user details" });
+        return res
+            .status(500)
+            .json({ error: "Internal server error while fetching user details" });
     }
 });
 exports.GetMe = GetMe;

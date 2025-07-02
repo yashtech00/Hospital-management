@@ -15,12 +15,19 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.GenerateToken = void 0;
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const GenerateToken = (userId, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const token = jsonwebtoken_1.default.sign(userId, process.env.JWT_SECRET, { expiresIn: '24h' });
+    if (!userId) {
+        console.error("GenerateToken error: userId is missing");
+        return;
+    }
+    const token = jsonwebtoken_1.default.sign({ userId }, // ✅ Payload is an object
+    process.env.JWT_SECRET, // ✅ Make sure secret exists
+    { expiresIn: "24h" });
     res.cookie("jwt", token, {
-        maxAge: 15 * 24 * 60 * 60 * 1000,
+        maxAge: 15 * 24 * 60 * 60 * 1000, // 15 days
         httpOnly: true,
         sameSite: "strict",
-        secure: (process.env.NODE_ENV || "development").trim() !== "development"
+        secure: (process.env.NODE_ENV || "development").trim() !== "development",
     });
+    return token;
 });
 exports.GenerateToken = GenerateToken;
