@@ -1,4 +1,6 @@
 import express from "express"
+import dotenv from "dotenv"
+dotenv.config();
 import userRoutes from "./routes/userRoutes";
 import appointRoutes from "./routes/appointRoutes"
 import healthRoutes from "./routes/healthRoutes"
