@@ -1,5 +1,5 @@
 import AppointmentModel from "../models/AppointmentSchema";
-import { appointProp } from "../type/AppointmentSchema";
+import { appointProp } from "../type/AppointmentProp";
 
 
 export const BookAppointment = async (req: any, res: any) => {

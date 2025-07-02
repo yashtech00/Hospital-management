@@ -9,5 +9,5 @@ const Authentication_1 = __importDefault(require("../lib/Authentication"));
 const router = express_1.default.Router();
 router.post("/login", auth_1.Login);
 router.post("/signup", auth_1.Signup);
-router.get("/user", Authentication_1.default, auth_1.GetMe);
+router.get("/", Authentication_1.default, auth_1.GetMe);
 exports.default = router;

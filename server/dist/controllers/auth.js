@@ -15,12 +15,12 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.GetMe = exports.Login = exports.Signup = void 0;
 const GenerateCookies_1 = require("../lib/GenerateCookies");
 const UserSchema_1 = __importDefault(require("../models/UserSchema"));
-const userSchema_1 = require("../type/userSchema");
+const userProp_1 = require("../type/userProp");
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const Signup = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const SignupPayload = req.body;
-        const SignupParsed = userSchema_1.SignupProp.safeParse(SignupPayload);
+        const SignupParsed = userProp_1.SignupProp.safeParse(SignupPayload);
         if (!SignupParsed) {
             return res.status(400).message("Invalid user details");
         }
@@ -49,7 +49,7 @@ exports.Signup = Signup;
 const Login = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const LoginPayload = req.body;
-        const LoginParsed = userSchema_1.LoginProp.safeParse(LoginPayload);
+        const LoginParsed = userProp_1.LoginProp.safeParse(LoginPayload);
         if (!LoginParsed) {
             return res.status(400).message("Invalid user details");
         }

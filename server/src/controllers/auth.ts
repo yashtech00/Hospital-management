@@ -1,6 +1,6 @@
 import { GenerateToken } from "../lib/GenerateCookies";
 import UserModel from "../models/UserSchema";
-import { LoginProp, SignupProp } from "../type/userSchema";
+import { LoginProp, SignupProp } from "../type/userProp";
 import bcyrpt from "bcrypt";
 
 export const Signup = async (req: any, res: any) => {

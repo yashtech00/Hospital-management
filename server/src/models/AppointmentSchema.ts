@@ -1,6 +1,4 @@
 import mongoose from "mongoose";
-import { mongo } from "../db/db";
-
 
 const Schema = mongoose.Schema;
 

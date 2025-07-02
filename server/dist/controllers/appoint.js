@@ -14,12 +14,12 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.DeleteAppointment = exports.Appointments = exports.BookAppointment = void 0;
 const AppointmentSchema_1 = __importDefault(require("../models/AppointmentSchema"));
-const AppointmentSchema_2 = require("../type/AppointmentSchema");
+const AppointmentProp_1 = require("../type/AppointmentProp");
 const BookAppointment = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const appointPayload = req.body;
         const docId = req.params.id;
-        const appointParsed = AppointmentSchema_2.appointProp.safeParse(appointPayload);
+        const appointParsed = AppointmentProp_1.appointProp.safeParse(appointPayload);
         if (!appointParsed) {
             return res.status(500).json("Wrong id of patient or doctor");
         }

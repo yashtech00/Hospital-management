@@ -2,12 +2,11 @@ import express from "express";
 import { GetMe, Login, Signup } from "../controllers/auth";
 import Authentication from "../lib/Authentication";
 
- const router = express.Router();
-
+const router = express.Router();
 
 router.post("/login", Login);
 router.post("/signup", Signup);
 
-router.get("/user",Authentication, GetMe);
+router.get("/",Authentication, GetMe);
 
 export default router;

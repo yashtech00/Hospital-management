@@ -7,6 +7,7 @@ exports.mongo = mongo;
 const mongoose_1 = __importDefault(require("mongoose"));
 function mongo() {
     const Mongo_URI = process.env.Mongo_URI;
+    console.log(Mongo_URI, "mongo url");
     if (!Mongo_URI) {
         throw new Error("Mongodb url is invalid");
     }
