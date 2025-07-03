@@ -6,6 +6,6 @@ import Authentication from "../lib/Authentication";
 
 router.get("/appointments",Authentication, Appointments)
 router.post("/book",Authentication, BookAppointment);
-router.delete("/appointment",Authentication, DeleteAppointment)
+router.delete("/appointment/:id",Authentication, DeleteAppointment)
 
 export default router;

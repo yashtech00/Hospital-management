@@ -47,11 +47,13 @@ const BookAppointment = (req, res) => __awaiter(void 0, void 0, void 0, function
 exports.BookAppointment = BookAppointment;
 const Appointments = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const Appoint = yield AppointmentSchema_1.default.find().populate('patientId');
+        const Appoint = yield AppointmentSchema_1.default.find().populate("patientId");
         if (req.user.role != "doctor") {
             return res.status(405).json("User not allowed to book appointments");
         }
-        return res.status(200).json({ message: "fetched appointments", data: Appoint });
+        return res
+            .status(200)
+            .json({ message: "fetched appointments", data: Appoint });
     }
     catch (e) {
         console.error(e);
@@ -64,13 +66,16 @@ exports.Appointments = Appointments;
 const DeleteAppointment = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const appointmentId = req.params.id;
+        console.log(appointmentId, "appointment id");
         if (req.user.role != "patient") {
             return res.status(405).json("User not allowed to book appointments");
         }
-        if (!appointmentId.success) {
-            return res.status(404).json("Invalid data");
+        const deleteAppoint = yield AppointmentSchema_1.default.findByIdAndDelete(appointmentId);
+        if (!deleteAppoint) {
+            return res
+                .status(404)
+                .json({ message: "Booked Appointment is not found" });
         }
-        const deleteAppoint = yield AppointmentSchema_1.default.deleteOne(appointmentId);
         return res.status(200).json("appointment deleted successfully");
     }
     catch (e) {

@@ -3,36 +3,58 @@ import { HealthProp } from "../type/Healthprop";
 
 
 export const HealthSummary = async (req: any, res: any) => {
-    try {
-        const healthPayload = req.body;
-        const patientId = req.params.id;
-        const healthParsed = HealthProp.safeParse(healthPayload);
-        if (!healthParsed.success) {
-            return res.status(400).json(
-                { error: "Error in health payload" },
-                {details:healthParsed.error.errors}
-            );
-        }
+  try {
+    const healthPayload = req.body;
+    const healthParsed = HealthProp.safeParse(healthPayload);
 
-        const health = await HealthModel.create({
-            doctorName: healthPayload.doctorName,
-            patientId: patientId,
-            Medication: healthPayload.Medication,
-            upcomingAppointment: healthPayload.upcomingAppointment,
-            recentHealthAlert: healthPayload.recentHealthAlert,
-            vitals: healthPayload.vitals,
-            notes: healthPayload.notes,
-            healthStatus: healthPayload.healthStatus,
-            reports: healthPayload.reports,
-            lastUpdatedBy:healthPayload.lastUpdatedBy
-        })
-
-        return res.status(200).json({ message: "Health summary created successfully" }, { data: health });
-    } catch (e:any) {
-        console.error(e.message);
-        return res.status(500).json("Internal server error while creating health summary")
+    if (!healthParsed.success) {
+      return res.status(400).json({
+        error: "Error in health payload",
+        details: healthParsed.error.errors,
+      });
     }
-}
+    if (req.user.role != "doctor") {
+      return res.status(405).json({ message: "User do not have permission" });
+    }
+
+    const {
+      doctorName,
+      patientId,
+      Medication,
+      upcomingAppointment,
+      recentHealthAlert,
+      vitals,
+      notes,
+      healthStatus,
+      reports,
+      lastUpdatedBy,
+    } = healthParsed.data;
+
+    const health = await HealthModel.create({
+      doctorName,
+      patientId,
+      Medication,
+      upcomingAppointment,
+      recentHealthAlert,
+      vitals,
+      notes,
+      healthStatus,
+      reports,
+      lastUpdatedBy,
+    });
+
+    return res.status(200).json({
+      message: "Health summary created successfully",
+      data: health,
+    });
+  } catch (e: any) {
+    console.error(e.message);
+    return res.status(500).json({
+      error: "Internal server error while creating health summary",
+    });
+  }
+};
+
 
 export const Health = async (req: any, res: any) => {
     try {
