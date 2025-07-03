@@ -59,8 +59,11 @@ export const HealthSummary = async (req: any, res: any) => {
 export const Health = async (req: any, res: any) => {
     try {
         const patientId = req.params.id;
-        const health = await HealthModel.find({ patientId: patientId });
-
+      const health = await HealthModel.find({ patientId: patientId }).populate('patientId');
+      
+      if (req.user.role != "patient") {
+      return res.status(405).json({ message: "User do not have permission" });
+    }
 
     return res.status(200).json({
       message: "Health summaries fetched successfully",

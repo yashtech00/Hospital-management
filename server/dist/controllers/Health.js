@@ -57,7 +57,10 @@ exports.HealthSummary = HealthSummary;
 const Health = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const patientId = req.params.id;
-        const health = yield HealthSchema_1.default.find({ patientId: patientId });
+        const health = yield HealthSchema_1.default.find({ patientId: patientId }).populate('patientId');
+        if (req.user.role != "patient") {
+            return res.status(405).json({ message: "User do not have permission" });
+        }
         return res.status(200).json({
             message: "Health summaries fetched successfully",
             data: health,

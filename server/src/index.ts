@@ -19,7 +19,7 @@ mongo();
 
 app.use("/api/user", userRoutes);
 app.use("/api/Appointment", appointRoutes);
-app.use("api/health", healthRoutes);
+app.use("/api/health", healthRoutes);
 
 app.listen(PORT, () => {
     console.log(`server is connected on ${PORT}`);

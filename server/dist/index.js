@@ -20,7 +20,7 @@ app.use((0, cookie_parser_1.default)());
 (0, db_1.mongo)();
 app.use("/api/user", userRoutes_1.default);
 app.use("/api/Appointment", appointRoutes_1.default);
-app.use("api/health", healthRoutes_1.default);
+app.use("/api/health", healthRoutes_1.default);
 app.listen(PORT, () => {
     console.log(`server is connected on ${PORT}`);
 });
