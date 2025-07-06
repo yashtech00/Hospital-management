@@ -1,19 +1,24 @@
 import './App.css'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import Home from './pages/Home'
+import Signup from './pages/Auth/Signup'
 
 function App() {
 
 
 
   return (
-    <div className='bg-gray-900 h-screen'>
-      <BrowserRouter>
-        <Routes>
-          <Route path='/' element={<Home/>}> </Route>
-      </Routes>
-      </BrowserRouter>
-    </div>
+    <div className="h-screen bg-gradient-to-tl from-primary to-secondary">
+  <BrowserRouter>
+    <Routes>
+      
+          <Route path="/" element={<Home />} />
+          <Route path="/signup" element={<Signup />} />
+          {/* <Route path="/signin" element={<Home />} /> */}
+    </Routes>
+  </BrowserRouter>
+</div>
+
   )
 }
 

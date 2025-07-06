@@ -1,12 +1,12 @@
-import AppBar from "../components/AppBar";
 
 
 
-export default function Home() {
+
+export default function Signin() {
     return (
         <div>
-            <AppBar/>
-            Home
+            
+            Signin
         </div>
     )
 }
