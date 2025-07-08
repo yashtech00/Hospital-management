@@ -9,7 +9,7 @@ function App() {
 
 
   return (
-    <div className="h-screen bg-gradient-to-t from-primary to-secondary">
+    <div className="h-screen bg-gradient-to-tl from-secondary via-primary to-secondary">
   <BrowserRouter>
     <Routes>
           <Route path="/" element={<Home />} />
