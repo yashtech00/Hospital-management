@@ -10,7 +10,9 @@ export default function AppBar() {
                 <nav>
                     <ul className="flex space-x-6 text-white font-medium">
                         <li className="hover:text-yellow-300 transition cursor-pointer">Home</li>
-                        <li className="hover:text-yellow-300 transition cursor-pointer">Appointment</li>
+                        <a href="/Appointment">
+                            <li className="hover:text-yellow-300 transition cursor-pointer">Appointment</li>
+                            </a>
                         <li className="hover:text-yellow-300 transition cursor-pointer">About Us</li>
                         <a href="/signup">
                         <li className="hover:bg-yellow-300 hover:text-black px-3  rounded-full transition cursor-pointer">
