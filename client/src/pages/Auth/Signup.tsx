@@ -1,101 +1,155 @@
 import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
-import { useState } from "react"
-import type { AuthProp } from "../../types/AuthType";
-
-
-
-
+import { useState } from "react";
+import type { SignUpProp } from "../../types/AuthType";
+import { motion } from "framer-motion";
+import { User, Lock, Mail, Shield } from "lucide-react";
 
 export default function Signup() {
-    const [fullname, setFullname] = useState("");
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
-    const [role, setRole] = useState("patient");
+  const [fullname, setFullname] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [role, setRole] = useState("patient");
 
-    const BACKEND_URL = import.meta.env.BACKEND_URL;
+  const BACKEND_URL = import.meta.env.VITE_BACKEND_URL; // use correct env variable for Vite
 
-    const { mutate, isPending, error } = useMutation({
-        mutationKey: ["auth"],
-        mutationFn: async (AuthDetails: AuthProp) => {
-            try {
-                const res = await axios.post(`${BACKEND_URL}/api/user/signup`, { AuthDetails }, { withCredentials: true })
-                return res.data;
-            } catch (err) {
-                console.error(err);
-            }
-        }
-    })
+  const { mutate, isPending, error } = useMutation({
+    mutationKey: ["auth"],
+    mutationFn: async (authDetails: SignUpProp) => {
+      const res = await axios.post(
+        `${BACKEND_URL}/api/user/signup`,
+        authDetails,
+        { withCredentials: true }
+      );
+      return res.data;
+    },
+  });
 
-    const handleSubmit = (e: any) => {
-        e.preventDefault();
-        const AuthDetails: AuthProp = {
-            fullname,
-            email,
-            password,
-            role
-        }
-        mutate(AuthDetails);
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    const authDetails: SignUpProp = { fullname, email, password, role };
+    mutate(authDetails);
+  };
 
-    }
+  const handleInput = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+    const { name, value } = e.target;
+    if (name === "fullname") setFullname(value);
+    else if (name === "email") setEmail(value);
+    else if (name === "password") setPassword(value);
+    else if (name === "role") setRole(value);
+  };
 
-    const handleInput = (e: any) => {
-        const { name, value } = e.target;
-        if (name === 'fullname') setFullname(value);
-        else if (name === 'email') setEmail(value);
-        else if (name === 'password') setPassword(value);
-        else if (name === 'role') setRole(value);
-    }
+  const roles = ["patient", "doctor"];
 
-    return (
-        <div>
-            <div>
-                <form onSubmit={handleSubmit}>
-                    <label>Signup</label>
-                    <div>
-                        <label>Role</label>
-                        <select title="role" name="role" value={role} onChange={handleInput}>
-                            <option value="patient">Patient</option>
-                            <option value="doctor">Doctor</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label>Fullname</label>
-                        <input
-                            placeholder="Enter your fullname"
-                            value={fullname}
-                            name="fullname"
-                            onChange={handleInput}
-                        />
-                    </div>
-                    <div>
-                        <label>Email</label>
-                        <input
-                            placeholder="Enter your Email"
-                            value={email}
-                            onChange={handleInput}
-                            name="email"
-                        />
-                    </div>
-                    <div>
-                        <label>Password</label>
-                        <input
-                            placeholder="Enter your password"
-                            value={password}
-                            name="password"
-                            onChange={handleInput}
-                        />
-                    </div>
-                    <div>
-                        <button>
-                            {isPending ? "Signing up..." : "Sign up"}
-                        </button>
-                        {error && <p className="text-red-500">Signup failed try again</p>}
+  return (
+    <div className="flex justify-center items-center min-h-screen ">
+      <motion.form
+        onSubmit={handleSubmit}
+        initial={{ opacity: 0, y: 40 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6 }}
+        className="bg-white rounded-2xl shadow-2xl p-8 space-y-6 w-full max-w-md"
+      >
+        <h2 className="text-center text-2xl font-bold text-gray-800">Sign Up</h2>
 
-                        <p>Already have an account <a href="/signin">Login</a></p>
-                    </div>
-                </form>
-            </div>
+        {/* Role Selection */}
+        <div className="space-y-3">
+          {/* <label className="block text-gray-600">Select Role</label> */}
+          <div className="flex justify-center gap-4">
+            {roles.map((item) => (
+              <motion.div
+                key={item}
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                onClick={() => setRole(item)}
+                className={`cursor-pointer flex items-center gap-3 p-8 rounded-lg border transition-all select-none
+                ${role === item ? "bg-primary text-white border-primary" : "bg-white text-gray-700 border-gray-300"}`}
+              >
+                <Shield size={20} />
+                <span className="capitalize">{item}</span>
+                <input
+                  type="radio"
+                  name="role"
+                  value={item}
+                  checked={role === item}
+                  onChange={handleInput}
+                  className="hidden"
+                />
+              </motion.div>
+            ))}
+          </div>
         </div>
-    )
+
+        {/* Fullname */}
+        <div className="space-y-3">
+          <label className="block text-gray-600">Full Name</label>
+          <div className="relative">
+            <User className="absolute left-3 top-2.5 text-gray-400" size={20} />
+            <input
+              name="fullname"
+              placeholder="Enter your fullname"
+              value={fullname}
+              onChange={handleInput}
+              className="w-full pl-10 pr-3 py-2 rounded-lg border focus:outline-none focus:ring-2 focus:ring-primary"
+            />
+          </div>
+        </div>
+
+        {/* Email */}
+        <div className="space-y-3">
+          <label className="block text-gray-600">Email</label>
+          <div className="relative">
+            <Mail className="absolute left-3 top-2.5 text-gray-400" size={20} />
+            <input
+              name="email"
+              placeholder="Enter your email"
+              value={email}
+              onChange={handleInput}
+              className="w-full pl-10 pr-3 py-2 rounded-lg border focus:outline-none focus:ring-2 focus:ring-primary"
+            />
+          </div>
+        </div>
+
+        {/* Password */}
+        <div className="space-y-3">
+          <label className="block text-gray-600">Password</label>
+          <div className="relative">
+            <Lock className="absolute left-3 top-2.5 text-gray-400" size={20} />
+            <input
+              type="password"
+              name="password"
+              placeholder="Enter your password"
+              value={password}
+              onChange={handleInput}
+              className="w-full pl-10 pr-3 py-2 rounded-lg border focus:outline-none focus:ring-2 focus:ring-primary"
+            />
+          </div>
+        </div>
+
+        {/* Submit Button */}
+        <motion.button
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+          type="submit"
+          disabled={isPending}
+          className="w-full bg-primary text-white py-2 rounded-lg hover:bg-primary/90 transition-all"
+        >
+          {isPending ? "Signing up..." : "Sign Up"}
+        </motion.button>
+
+        {/* Error Message */}
+        {error && (
+          <p className="text-red-500 text-sm text-center">Signup failed. Please try again.</p>
+        )}
+
+        {/* Redirect */}
+        <p className="text-sm text-gray-600 text-center">
+          Already have an account?{" "}
+          <a href="/signin" className="text-primary hover:underline">
+            Login
+          </a>
+        </p>
+      </motion.form>
+    </div>
+  );
 }

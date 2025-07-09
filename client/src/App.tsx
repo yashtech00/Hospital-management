@@ -4,6 +4,7 @@ import Home from './pages/Home'
 import Signup from './pages/Auth/Signup'
 import { useQuery } from '@tanstack/react-query'
 import axios from 'axios'
+import Signin from './pages/Auth/Singin'
 
 
 function App() {
@@ -29,7 +30,7 @@ function App() {
     <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/signup" element={<Signup />} />
-          {/* <Route path="/signin" element={<Home />} /> */}
+          <Route path="/signin" element={<Signin />} />
     </Routes>
   </BrowserRouter>
 </div>
