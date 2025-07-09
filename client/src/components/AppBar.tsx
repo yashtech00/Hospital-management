@@ -4,7 +4,7 @@ export default function AppBar() {
             <div className="flex items-center justify-between">
                 {/* Logo */}
                 <div className="text-white text-2xl font-bold tracking-wide">
-                    Medi<span className="text-yellow-300">Go</span>
+                    Medi<span className="">Go</span>
                 </div>
                 {/* Nav Links */}
                 <nav>
