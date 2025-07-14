@@ -6,7 +6,11 @@ const HealthSchema = new mongoose.Schema({
     ref: "user",
     required: true,
   },
-  doctorName: { type: String, required: true },
+  
+  doctorName: {
+    type: String, required: true
+  },
+
   Medication: [
     {
       name: String,

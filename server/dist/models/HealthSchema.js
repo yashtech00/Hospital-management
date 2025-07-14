@@ -10,7 +10,9 @@ const HealthSchema = new mongoose_1.default.Schema({
         ref: "user",
         required: true,
     },
-    doctorName: { type: String, required: true },
+    doctorName: {
+        type: String, required: true
+    },
     Medication: [
         {
             name: String,

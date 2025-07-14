@@ -9,8 +9,8 @@ router.post("/login", Login);
 router.post("/signup", Signup);
 router.post("/logout", Logout);
 
-router.post("/doctor", DoctorDetails);
-router.post("/patient", PatientDetails);
+router.post("/doctor", Authentication,DoctorDetails);
+router.post("/patient", Authentication,PatientDetails);
 
 router.get("/me",Authentication, GetMe);
 

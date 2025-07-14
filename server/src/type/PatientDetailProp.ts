@@ -5,5 +5,5 @@ export const patientDetailsProp = z.object({
     gender: z.string(),
     address: z.string(),
     bloodGroup: z.string(),
-    medicalHistory:z.string(),
+    medicalHistory:z.array(z.string()),
 })

@@ -10,7 +10,11 @@ export const DoctorDetails = async (req: any, res: any) => {
 
     if (!DoctorDetailParsed.success) {
       return res.status(404).json({ message: "Invalid info" });
-    }
+      }
+      
+      if (req.user.role !== "doctor") {
+          return res.status(404).json({ message: "User not allowed, you are not doctor" });
+      }
 
     const { specialization, experience, availableDays, location } =
       DoctorDetailPayload.data;
@@ -34,18 +38,22 @@ export const DoctorDetails = async (req: any, res: any) => {
 
 export const PatientDetails = async (req: any, res: any) => {
   try {
-    const patientPayload = req.data();
+    const patientPayload = req.body;
     const patientParsed = patientDetailsProp.safeParse(patientPayload);
 
-    if (!patientParsed.success) {
+     if (!patientParsed.success) {
       return res.status(404).json({ message: "invalid info" });
-    }
+      }
+
+       if (req.user.role !== "patient") {
+          return res.status(404).json({ message: "User not allowed, you are not doctor" });
+      }
 
     const { age, gender, address, bloodGroup, medicalHistory } =
       patientPayload.data;
     const patient = await PatientModel.create({
       user: req.user._id,
-      age,
+      age:0,
       gender,
       address,
       bloodGroup,
