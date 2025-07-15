@@ -9,5 +9,4 @@ exports.DoctorDetailProp = zod_1.default.object({
     specialization: zod_1.default.string(),
     experience: zod_1.default.number(),
     availableDays: zod_1.default.string(),
-    location: zod_1.default.string()
 });

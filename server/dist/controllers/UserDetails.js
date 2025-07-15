@@ -27,13 +27,12 @@ const DoctorDetails = (req, res) => __awaiter(void 0, void 0, void 0, function* 
         if (req.user.role !== "doctor") {
             return res.status(404).json({ message: "User not allowed, you are not doctor" });
         }
-        const { specialization, experience, availableDays, location } = DoctorDetailParsed.data;
+        const { specialization, experience, availableDays } = DoctorDetailParsed.data;
         const doctor = yield DoctorSchema_1.default.create({
             user: req.user._id,
             specialization,
             experience,
             availableDays,
-            location,
         });
         return res
             .status(200)

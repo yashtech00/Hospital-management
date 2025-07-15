@@ -20,10 +20,6 @@ const DoctorSchema = new Schema({
         type: String,
         default: "Mon-Fri"
     },
-    location: {
-        type: String,
-        default: "City Hospital"
-    }
 }, { timestamps: true });
 
 const DoctorModel = mongoose.model("doctorDetail", DoctorSchema);

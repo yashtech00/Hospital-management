@@ -6,6 +6,7 @@ import { useQuery } from '@tanstack/react-query'
 import axios from 'axios'
 import Signin from './pages/Auth/Singin'
 import Appointments from './pages/Appointments'
+import DoctorInfo from './pages/DoctorInfo'
 
 
 function App() {
@@ -33,7 +34,7 @@ function App() {
           <Route path="/signup" element={<Signup />} />
           <Route path="/signin" element={<Signin />} />
           <Route path='/doctorInfo' element={<DoctorInfo />} />
-          <Route path='/patientInfo' element={<PatientInfo/>} />
+          {/* <Route path='/patientInfo' element={<PatientInfo/>} /> */}
           <Route path="/Appointment" element={<Appointments />} />
     </Routes>
   </BrowserRouter>

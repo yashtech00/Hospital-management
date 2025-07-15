@@ -16,7 +16,7 @@ export const DoctorDetails = async (req: any, res: any) => {
           return res.status(404).json({ message: "User not allowed, you are not doctor" });
       }
 
-    const { specialization, experience, availableDays, location } =
+    const { specialization, experience, availableDays } =
       DoctorDetailParsed.data;
 
     const doctor = await DoctorModel.create({
@@ -24,7 +24,6 @@ export const DoctorDetails = async (req: any, res: any) => {
       specialization,
       experience,
       availableDays,
-      location,
     });
 
     return res
