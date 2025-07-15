@@ -17,7 +17,7 @@ export const DoctorDetails = async (req: any, res: any) => {
       }
 
     const { specialization, experience, availableDays, location } =
-      DoctorDetailPayload.data;
+      DoctorDetailParsed.data;
 
     const doctor = await DoctorModel.create({
       user: req.user._id,
@@ -41,27 +41,26 @@ export const PatientDetails = async (req: any, res: any) => {
     const patientPayload = req.body;
     const patientParsed = patientDetailsProp.safeParse(patientPayload);
 
-     if (!patientParsed.success) {
-      return res.status(404).json({ message: "invalid info" });
-      }
+    if (!patientParsed.success) {
+      return res.status(400).json({ message: "Invalid patient info" });
+    }
 
-       if (req.user.role !== "patient") {
-          return res.status(404).json({ message: "User not allowed, you are not doctor" });
-      }
+    if (req.user.role !== "patient") {
+      return res.status(403).json({ message: "User not allowed, you are not a patient" });
+    }
 
-    const { age, gender, address, bloodGroup, medicalHistory } =
-      patientPayload.data;
+    const { age, gender, address, bloodGroup, medicalHistory } = patientParsed.data;
+
     const patient = await PatientModel.create({
       user: req.user._id,
-      age:0,
+      age,
       gender,
       address,
       bloodGroup,
       medicalHistory,
     });
-    return res
-      .status(200)
-      .json({ message: "patient details added successfully" });
+
+    return res.status(200).json({ message: "Patient details added successfully", data: patient });
   } catch (e) {
     console.error(e);
     return res.status(500).json({ message: "Internal server error" });

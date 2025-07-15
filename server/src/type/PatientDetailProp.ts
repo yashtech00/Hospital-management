@@ -2,7 +2,7 @@ import z from "zod";
 
 export const patientDetailsProp = z.object({
     age: z.number(),
-    gender: z.string(),
+    gender: z.enum(["male","female","other"]),
     address: z.string(),
     bloodGroup: z.string(),
     medicalHistory:z.array(z.string()),

@@ -27,7 +27,7 @@ const DoctorDetails = (req, res) => __awaiter(void 0, void 0, void 0, function* 
         if (req.user.role !== "doctor") {
             return res.status(404).json({ message: "User not allowed, you are not doctor" });
         }
-        const { specialization, experience, availableDays, location } = DoctorDetailPayload.data;
+        const { specialization, experience, availableDays, location } = DoctorDetailParsed.data;
         const doctor = yield DoctorSchema_1.default.create({
             user: req.user._id,
             specialization,
@@ -50,12 +50,12 @@ const PatientDetails = (req, res) => __awaiter(void 0, void 0, void 0, function*
         const patientPayload = req.body;
         const patientParsed = PatientDetailProp_1.patientDetailsProp.safeParse(patientPayload);
         if (!patientParsed.success) {
-            return res.status(404).json({ message: "invalid info" });
+            return res.status(400).json({ message: "Invalid patient info" });
         }
         if (req.user.role !== "patient") {
-            return res.status(404).json({ message: "User not allowed, you are not doctor" });
+            return res.status(403).json({ message: "User not allowed, you are not a patient" });
         }
-        const { age, gender, address, bloodGroup, medicalHistory } = patientPayload.data;
+        const { age, gender, address, bloodGroup, medicalHistory } = patientParsed.data;
         const patient = yield PatientSchema_1.default.create({
             user: req.user._id,
             age,
@@ -64,9 +64,7 @@ const PatientDetails = (req, res) => __awaiter(void 0, void 0, void 0, function*
             bloodGroup,
             medicalHistory,
         });
-        return res
-            .status(200)
-            .json({ message: "patient details added successfully" });
+        return res.status(200).json({ message: "Patient details added successfully", data: patient });
     }
     catch (e) {
         console.error(e);
