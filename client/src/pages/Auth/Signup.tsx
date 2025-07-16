@@ -14,12 +14,12 @@ export default function Signup() {
 
   const navigate = useNavigate();
 
-
+  const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
   const { mutate, isPending, error } = useMutation({
     mutationKey: ["auth"],
     mutationFn: async (authDetails: SignUpProp) => {
       const res = await axios.post(
-        `http://localhost:8000/api/user/signup`,
+        `${BACKEND_URL}/api/user/signup`,
         authDetails,
         { withCredentials: true }
       );
