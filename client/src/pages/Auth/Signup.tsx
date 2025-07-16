@@ -4,6 +4,7 @@ import { useState } from "react";
 import type { SignUpProp } from "../../types/AuthType";
 import { motion } from "framer-motion";
 import { User, Lock, Mail, Shield } from "lucide-react";
+import { Navigate, useNavigate } from "react-router-dom";
 
 export default function Signup() {
   const [fullname, setFullname] = useState("");
@@ -11,18 +12,27 @@ export default function Signup() {
   const [password, setPassword] = useState("");
   const [role, setRole] = useState("patient");
 
-  const BACKEND_URL = import.meta.env.VITE_BACKEND_URL; // use correct env variable for Vite
+  const navigate = useNavigate();
+
 
   const { mutate, isPending, error } = useMutation({
     mutationKey: ["auth"],
     mutationFn: async (authDetails: SignUpProp) => {
       const res = await axios.post(
-        `${BACKEND_URL}/api/user/signup`,
+        `http://localhost:8000/api/user/signup`,
         authDetails,
         { withCredentials: true }
       );
-      return res.data;
+      return res.data; 
     },
+    onSuccess: (data) => {
+      // console.log("Returned data:", data);
+      if (data.data.role == "doctor") {
+        navigate("/doctorInfo")
+      } else {
+        navigate("/patientInfo")
+      }
+    }
   });
 
   const handleSubmit = (e: React.FormEvent) => {

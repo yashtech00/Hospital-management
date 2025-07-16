@@ -12,19 +12,19 @@ import DoctorInfo from './pages/DoctorInfo'
 function App() {
 
 
-  const BACKEND_URL = import.meta.env.BACKEND_URL;
+  // const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
-  const { data } = useQuery({
-    queryKey: ["me"],
-    queryFn: async () => {
-      try {
-        const fetch = await axios.get(`${BACKEND_URL}/api/user/me`, { withCredentials: true });
-        return fetch.data;
-      } catch (err) {
-        console.error(err);
-      }
-    }
-  })
+  // const { data } = useQuery({
+  //   queryKey: ["me"],
+  //   queryFn: async () => {
+  //     try {
+  //       const fetch = await axios.get(`${BACKEND_URL}/api/user/me`, { withCredentials: true });
+  //       return fetch.data;
+  //     } catch (err) {
+  //       console.error(err);
+  //     }
+  //   }
+  // })
 
   return (
     <div className="h-screen bg-gradient-to-tl from-secondary via-primary to-secondary">
