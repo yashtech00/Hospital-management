@@ -7,4 +7,6 @@ exports.appointProp = void 0;
 const zod_1 = __importDefault(require("zod"));
 exports.appointProp = zod_1.default.object({
     doctorId: zod_1.default.string(),
+    date: zod_1.default.string(),
+    time: zod_1.default.string(),
 });

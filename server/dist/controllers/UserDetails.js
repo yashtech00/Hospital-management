@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.PatientDetails = exports.DoctorDetails = void 0;
+exports.Patients = exports.Doctors = exports.PatientDetails = exports.DoctorDetails = void 0;
 const DoctorSchema_1 = __importDefault(require("../models/DoctorSchema"));
 const PatientSchema_1 = __importDefault(require("../models/PatientSchema"));
 const DoctorDetailProp_1 = require("../type/DoctorDetailProp");
@@ -71,3 +71,25 @@ const PatientDetails = (req, res) => __awaiter(void 0, void 0, void 0, function*
     }
 });
 exports.PatientDetails = PatientDetails;
+const Doctors = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const doctor = yield DoctorSchema_1.default.find();
+        return res.status(200).json({ message: "fetched all doctors", data: doctor });
+    }
+    catch (e) {
+        console.error(e);
+        return res.status(500).json({ message: "Internal server error" });
+    }
+});
+exports.Doctors = Doctors;
+const Patients = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const patient = yield PatientSchema_1.default.find().populate("user", "-password");
+        res.status(200).json({ message: "fetched all patients", data: patient });
+    }
+    catch (e) {
+        console.error(e);
+        return res.status(500).json({ message: "Internal server error while fetching all Patients" });
+    }
+});
+exports.Patients = Patients;

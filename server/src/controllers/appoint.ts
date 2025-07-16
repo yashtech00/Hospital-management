@@ -17,11 +17,22 @@ export const BookAppointment = async (req: any, res: any) => {
       });
     }
 
-    const { doctorId } = appointParsed.data;
+    const { doctorId,date,time } = appointParsed.data;
+     const alreadyBooked = await AppointmentModel.findOne({
+      patientId: req.user._id,
+       doctorId,
+      date,
+  time,
+     })
+    if (alreadyBooked) {
+      return res.status(409).json({ message: "you have already booked an appointment with this doctor" });
+    }
 
     const newAppoint = await AppointmentModel.create({
       patientId: req.user._id,
       doctorId: doctorId,
+      date,
+  time,
     });
 
     return res
@@ -39,7 +50,7 @@ export const Appointments = async (req: any, res: any) => {
   try {
     const Appoint = await AppointmentModel.find().populate("patientId");
     if (req.user.role != "doctor") {
-      return res.status(405).json("User not allowed to book appointments");
+      return res.status(405).json("User not allowed to appointments");
     }
     return res
       .status(200)
@@ -77,3 +88,22 @@ export const DeleteAppointment = async (req: any, res: any) => {
     });
   }
 };
+
+
+export const getPatientsByDoctor = async (req: any, res: any) => {
+  try {
+    const doctorId = req.user._id;
+
+    const appointments = await AppointmentModel.find({ doctorId }).populate("patientId", "-password");
+
+    const patient = appointments.map((appt) => appt.patientId);
+
+
+    return res.status(200).json({ message: "fetched patients who booked appointment with this doctor", data: patient });
+  } catch (e) {
+    console.error(e);
+
+    return res.status(500).json({error:"Internal server error"})
+    
+  }
+}

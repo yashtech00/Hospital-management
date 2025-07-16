@@ -13,6 +13,16 @@ const AppointmentSchema = new Schema({
         ref:"user",
         required: true,
     },
+    date: {
+        type: String,
+        required: true,
+        
+    },
+    time: {
+        type: String,
+        required:true
+    }
+
    
 }, { timestamps: true });
 

@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.DeleteAppointment = exports.Appointments = exports.BookAppointment = void 0;
+exports.getPatientsByDoctor = exports.DeleteAppointment = exports.Appointments = exports.BookAppointment = void 0;
 const AppointmentSchema_1 = __importDefault(require("../models/AppointmentSchema"));
 const AppointmentProp_1 = require("../type/AppointmentProp");
 const BookAppointment = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -28,10 +28,21 @@ const BookAppointment = (req, res) => __awaiter(void 0, void 0, void 0, function
                 details: appointParsed.error.errors,
             });
         }
-        const { doctorId } = appointParsed.data;
+        const { doctorId, date, time } = appointParsed.data;
+        const alreadyBooked = yield AppointmentSchema_1.default.findOne({
+            patientId: req.user._id,
+            doctorId,
+            date,
+            time,
+        });
+        if (alreadyBooked) {
+            return res.status(409).json({ message: "you have already booked an appointment with this doctor" });
+        }
         const newAppoint = yield AppointmentSchema_1.default.create({
             patientId: req.user._id,
             doctorId: doctorId,
+            date,
+            time,
         });
         return res
             .status(200)
@@ -49,7 +60,7 @@ const Appointments = (req, res) => __awaiter(void 0, void 0, void 0, function* (
     try {
         const Appoint = yield AppointmentSchema_1.default.find().populate("patientId");
         if (req.user.role != "doctor") {
-            return res.status(405).json("User not allowed to book appointments");
+            return res.status(405).json("User not allowed to appointments");
         }
         return res
             .status(200)
@@ -86,3 +97,16 @@ const DeleteAppointment = (req, res) => __awaiter(void 0, void 0, void 0, functi
     }
 });
 exports.DeleteAppointment = DeleteAppointment;
+const getPatientsByDoctor = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const doctorId = req.user._id;
+        const appointments = yield AppointmentSchema_1.default.find({ doctorId }).populate("patientId", "-password");
+        const patient = appointments.map((appt) => appt.patientId);
+        return res.status(200).json({ message: "fetched patients who booked appointment with this doctor", data: patient });
+    }
+    catch (e) {
+        console.error(e);
+        return res.status(500).json({ error: "Internal server error" });
+    }
+});
+exports.getPatientsByDoctor = getPatientsByDoctor;

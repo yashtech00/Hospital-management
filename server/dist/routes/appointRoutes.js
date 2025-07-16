@@ -10,4 +10,5 @@ const router = express_1.default.Router();
 router.get("/appointments", Authentication_1.default, appoint_1.Appointments);
 router.post("/book", Authentication_1.default, appoint_1.BookAppointment);
 router.delete("/appointment/:id", Authentication_1.default, appoint_1.DeleteAppointment);
+router.get("/doctor/appointments", Authentication_1.default, appoint_1.getPatientsByDoctor);
 exports.default = router;

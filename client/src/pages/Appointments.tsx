@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { User, Stethoscope, Calendar, MapPin } from "lucide-react";
 import { motion } from "framer-motion";
+import { useQuery } from "@tanstack/react-query";
+import axios from "axios";
 
 interface Doctor {
   id: string;
@@ -8,31 +10,25 @@ interface Doctor {
   specialization: string;
   experience: number;
   availableDays: string;
-  location: string;
 }
 
-const dummyDoctors: Doctor[] = [
-  {
-    id: "1",
-    name: "Dr. John Doe",
-    specialization: "Cardiologist",
-    experience: 10,
-    availableDays: "Mon - Fri, 10:00 AM - 4:00 PM",
-    location: "City Hospital",
-  },
-  {
-    id: "2",
-    name: "Dr. Sarah Lee",
-    specialization: "Neurologist",
-    experience: 8,
-    availableDays: "Mon - Sat, 9:00 AM - 3:00 PM",
-    location: "MediVault Clinic",
-  },
-  // Add more doctors here
-];
+
 
 export default function Appointments() {
-  const [doctors] = useState<Doctor[]>(dummyDoctors);
+  // const [doctors] = useState<Doctor[]>(dummyDoctors);
+
+  const BACKEND_URL = import.meta.env.VITE_BACKEND_URL; 
+
+  const { data: doctors, isLoading } = useQuery({
+    queryKey: ["doctors"],
+    queryFn: async () => {
+      try {
+        const res = await axios.get(`${BACKEND_URL}/api/user/`) 
+      } catch (e) {
+        
+      }
+    }
+  })
 
   return (
     <div className="min-h-screen bg-gray-50 p-8">

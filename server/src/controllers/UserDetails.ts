@@ -65,3 +65,25 @@ export const PatientDetails = async (req: any, res: any) => {
     return res.status(500).json({ message: "Internal server error" });
   }
 };
+
+export const Doctors = async (req: any, res: any) => {
+  try {
+    const doctor = await DoctorModel.find();
+    return res.status(200).json({message:"fetched all doctors",data:doctor})
+  } catch (e) {
+    console.error(e);
+    return res.status(500).json({ message: "Internal server error" });
+  }
+}
+
+export const Patients = async (req: any, res: any) => {
+  try { 
+    const patient = await PatientModel.find().populate("user","-password");
+    res.status(200).json({ message: "fetched all patients", data: patient });
+  } catch (e) {
+    console.error(e);
+
+    return res.status(500).json({message:"Internal server error while fetching all Patients"})
+    
+  }
+}
