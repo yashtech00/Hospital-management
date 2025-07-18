@@ -5,7 +5,8 @@ export default function Home() {
     return (
         <div className=" ">
             <AppBar />
-            <Hero/>
+            <Hero />
+            
         </div>
     );
 }
