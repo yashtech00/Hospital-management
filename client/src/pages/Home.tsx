@@ -1,4 +1,5 @@
 import AppBar from "../components/AppBar";
+import Features from "../components/Feature";
 import Hero from "../components/HeroSction";
 
 export default function Home() {
@@ -6,7 +7,7 @@ export default function Home() {
         <div className=" ">
             <AppBar />
             <Hero />
-            
+            <Features/>
         </div>
     );
 }
