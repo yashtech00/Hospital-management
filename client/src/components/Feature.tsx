@@ -1,9 +1,16 @@
 import { Mail, MapPin, Phone } from "lucide-react";
+import { motion } from "framer-motion";
 
 export default function Features() {
     return (
-        <div className="mt-40">
-            <div className="text-center mb-12 px-4 ">
+        <div className="">
+            {/* Header */}
+            <motion.div
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6 }}
+                className="text-center mb-12 px-4"
+            >
                 <h1 className="text-3xl font-bold mb-4 text-white">Book an Appointment</h1>
                 <p className="max-w-3xl mx-auto text-gray-400">
                     Easily book an in-clinic or tele consultation appointment with experienced doctors. Your health is our top priority.
@@ -12,12 +19,19 @@ export default function Features() {
                     <button className="bg-blue-500 text-white px-4 py-2 rounded-full">In-clinic Consultation</button>
                     <button className="bg-gray-100 text-blue-500 px-4 py-2 rounded-full border border-blue-300">Tele Consultation</button>
                 </div>
-            </div>
-            <div className="border-t-2 border-l-2 border-r-2 border-teal-900 mx-14 my-14 rounded-3xl">
-                <section className="py-8 px-4 md:px-16">
-                    <div className="mx-auto max-w-6xl flex flex-col md:flex-row items-start">
+            </motion.div>
+
+            {/* Content Section */}
+            <div className="border-t-2 border-l-2 border-r-2 border-blue-900 mx-14 rounded-3xl">
+                <section className=" py-8 px-4 md:px-16">
+                    <div className="mx-auto max-w-6xl flex flex-col md:flex-row">
                         {/* Left Side */}
-                        <div className="flex-1 relative">
+                        <motion.div
+                            initial={{ opacity: 0, x: -40 }}
+                            whileInView={{ opacity: 1, x: 0 }}
+                            transition={{ duration: 0.8 }}
+                            className="flex-1 relative"
+                        >
                             {/* Doctor Images */}
                             <div className="rounded-xl overflow-hidden mb-4 w-[300px] h-[350px] border-4">
                                 <img
@@ -35,7 +49,12 @@ export default function Features() {
                             </div>
 
                             {/* Doctor Info Card */}
-                            <div className="relative z-10 bottom-48 left-64 bg-white rounded-2xl shadow-lg p-8 w-80 border-4">
+                            <motion.div
+                                initial={{ opacity: 0, y: 60 }}
+                                whileInView={{ opacity: 1, y: 0 }}
+                                transition={{ duration: 0.7 }}
+                                className="relative z-10 bottom-48 left-64 bg-white rounded-2xl shadow-lg p-8 w-80 border-4"
+                            >
                                 <div className="flex items-center gap-4 mb-4">
                                     <img
                                         src="https://i.pravatar.cc/100?img=12"
@@ -65,11 +84,16 @@ export default function Features() {
                                         <p>manishmahant@gmail.com</p>
                                     </div>
                                 </div>
-                            </div>
-                        </div>
+                            </motion.div>
+                        </motion.div>
 
-                        {/* Right Side: Calendar and Slots */}
-                        <div className="bg-white rounded-2xl shadow-lg p-6 w-full md:w-[400px]">
+                        {/* Right Side: Calendar */}
+                        <motion.div
+                            initial={{ opacity: 0, x: 40 }}
+                            whileInView={{ opacity: 1, x: 0 }}
+                            transition={{ duration: 0.8 }}
+                            className="bg-white rounded-2xl shadow-lg p-6 w-full md:w-[400px]"
+                        >
                             <p className="text-gray-700 font-medium mb-2">Wednesday, 14 February</p>
 
                             {/* Calendar Header */}
@@ -115,7 +139,7 @@ export default function Features() {
                             <button className="w-full py-2 bg-gradient-to-r from-blue-500 to-teal-400 text-white rounded-full text-sm font-medium">
                                 Book Now
                             </button>
-                        </div>
+                        </motion.div>
                     </div>
                 </section>
             </div>
