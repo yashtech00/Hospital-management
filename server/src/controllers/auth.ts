@@ -92,7 +92,7 @@ export const GetMe = async (req: any, res: any) => {
       return res.status(401).json({ error: "Unauthorized" });
     }
 
-    const me = await UserModel.findById(req.user._id).select("-password");
+    const me = await UserModel.findById(req.user._id).populate("_id").select("-password");
 
     if (!me) {
       return res.status(404).json({ error: "User not found" });

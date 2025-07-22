@@ -87,3 +87,20 @@ export const Patients = async (req: any, res: any) => {
     
   }
 }
+
+export const Doctor = async (req: any, res: any) => {
+  try {
+    const userId = req.params.id;
+
+    const doctor = await DoctorModel.findOne({ user: userId }).populate("user", "-password");
+
+    if (!doctor) {
+      return res.status(404).json({ message: "Doctor not found" });
+    }
+
+    return res.status(200).json({ message: "Fetch particular doctor", data: doctor });
+  } catch (e) {
+    console.error("Error in Doctor fetch:", e);
+    return res.status(500).json({ message: "Internal server error while fetching doctor detail" });
+  }
+};

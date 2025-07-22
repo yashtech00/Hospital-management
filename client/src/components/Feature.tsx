@@ -11,7 +11,7 @@ export default function Features() {
                 transition={{ duration: 0.6 }}
                 className="text-center mb-12 px-4"
             >
-                <h1 className="text-3xl font-bold mb-4 text-white">Book an Appointment</h1>
+                <h1 className="text-4xl font-bold mb-4">Book an Appointment</h1>
                 <p className="max-w-3xl mx-auto text-gray-400">
                     Easily book an in-clinic or tele consultation appointment with experienced doctors. Your health is our top priority.
                 </p>

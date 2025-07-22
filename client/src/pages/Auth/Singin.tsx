@@ -4,12 +4,14 @@ import { useState } from "react";
 import type {  SignInProp } from "../../types/AuthType";
 import { motion } from "framer-motion";
 import {  Lock, Mail, Shield } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 export default function Signin() {
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [role, setRole] = useState("patient");
+  const navigate = useNavigate();
 
   const BACKEND_URL = import.meta.env.VITE_BACKEND_URL; // use correct env variable for Vite
 
@@ -17,12 +19,20 @@ export default function Signin() {
     mutationKey: ["auth"],
     mutationFn: async (authDetails: SignInProp) => {
       const res = await axios.post(
-        `${BACKEND_URL}/api/user/signin`,
+        `${BACKEND_URL}/api/user/login`,
         authDetails,
         { withCredentials: true }
       );
       return res.data;
     },
+    onSuccess: (data) => {
+      // console.log("Returned data:", data);
+      if (data.data.role == "doctor") {
+        navigate("/doctorInfo")
+      } else {
+        navigate("/patientInfo")
+      }
+    }
   });
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -50,7 +60,7 @@ export default function Signin() {
         transition={{ duration: 0.6 }}
         className="bg-white rounded-2xl shadow-2xl p-8 space-y-6 w-full max-w-md"
       >
-        <h2 className="text-center text-2xl font-bold text-gray-800">Sign Up</h2>
+        <h2 className="text-center text-2xl font-bold text-gray-800">Sign In</h2>
 
         {/* Role Selection */}
         <div className="space-y-3">
@@ -121,12 +131,12 @@ export default function Signin() {
           disabled={isPending}
           className="w-full bg-primary text-white py-2 rounded-lg hover:bg-primary/90 transition-all"
         >
-          {isPending ? "Signing up..." : "Sign Up"}
+          {isPending ? "Signing In..." : "Sign In"}
         </motion.button>
 
         {/* Error Message */}
         {error && (
-          <p className="text-red-500 text-sm text-center">Signup failed. Please try again.</p>
+          <p className="text-red-500 text-sm text-center">SignIn failed. Please try again.</p>
         )}
 
         {/* Redirect */}

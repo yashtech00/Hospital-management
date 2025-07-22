@@ -1,35 +1,57 @@
-"use client";
-import { motion } from "framer-motion";
-import { LayoutDashboard, CalendarDays } from "lucide-react";
+import { NavLink, useNavigate } from "react-router-dom";
+import { LayoutDashboard, CalendarDays, LogOut } from "lucide-react";
 
 export default function Sidebar() {
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    // Clear tokens, user data, etc. (example)
+    localStorage.clear();
+    navigate("/"); // or wherever your login page is
+  };
+
   return (
-    <motion.div
-      initial={{ x: -80, opacity: 0 }}
-      animate={{ x: 0, opacity: 1 }}
-      transition={{ type: "spring", stiffness: 60, duration: 0.5 }}
-      className="h-screen w-[18%] text-white p-6 shadow-lg flex flex-col"
-    >
-      {/* Logo Section */}
+    <div className="h-screen w-[18%] text-white p-6 shadow-lg flex flex-col ">
       <div className="text-2xl font-bold mb-10 tracking-wide">
         Medi<span className="text-yellow-300">Go</span>
       </div>
 
-      {/* Navigation Items */}
-      <ul className="space-y-6 font-medium">
+      {/* Navigation Links */}
+      <ul className="space-y-4 font-medium flex-grow">
         <li>
-          <button className="flex items-center space-x-3 hover:bg-teal-600 px-4 py-2 rounded-lg transition-all w-full text-left">
+          <NavLink
+            to="/DoctorDashboard"
+            className={({ isActive }) =>
+              `flex items-center space-x-3 px-4 py-2 rounded-lg transition-all w-full text-left 
+              ${isActive ? "bg-teal-600" : "hover:bg-teal-600"}`
+            }
+          >
             <LayoutDashboard className="w-5 h-5" />
             <span>Dashboard</span>
-          </button>
+          </NavLink>
         </li>
         <li>
-          <button className="flex items-center space-x-3 hover:bg-teal-600 px-4 py-2 rounded-lg transition-all w-full text-left">
+          <NavLink
+            to="/DoctorAppointments"
+            className={({ isActive }) =>
+              `flex items-center space-x-3 px-4 py-2 rounded-lg transition-all w-full text-left 
+              ${isActive ? "bg-teal-600" : "hover:bg-teal-600"}`
+            }
+          >
             <CalendarDays className="w-5 h-5" />
             <span>Appointments</span>
-          </button>
+          </NavLink>
         </li>
       </ul>
-    </motion.div>
+
+      {/* Logout Button */}
+      <button
+        onClick={handleLogout}
+        className="flex items-center space-x-3 px-4 py-2 rounded-lg transition-all w-full text-left hover:bg-teal-600"
+      >
+        <LogOut className="w-5 h-5" />
+        <span>Logout</span>
+      </button>
+    </div>
   );
 }

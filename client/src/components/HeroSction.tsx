@@ -4,7 +4,6 @@ import { Link, useNavigate } from "react-router-dom";
 import useGetMe from "../hooks/hook";
 
 export default function Hero() {
-
     const { authUser } = useGetMe();
     const navigate = useNavigate();
 
@@ -12,40 +11,84 @@ export default function Hero() {
         if (!authUser) {
             navigate("/signup");
         } else {
-            navigate("/Appointments")
+            navigate("/Appointments");
         }
-    }
-
-
+    };
 
     return (
-        <div className="relative text-white px-20 py-10 pt-14 flex flex-col md:flex-row items-center justify-between overflow-hidden">
+        <div className="relative px-20 py-10 pt-14 flex flex-col md:flex-row items-center justify-between overflow-hidden">
             <motion.div
                 initial={{ opacity: 0, x: -50 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.8 }}
-                className="ml-10 md:w-1/2 mb-32"
+                className="ml-2 md:w-[60%] mb-32"
             >
-                <div className="space-y-10 p-4">
-                    <h1 className="text-4xl font-thin">GET HIGH QUALITY</h1>
-                    <p className="text-7xl font-semibold">Medical Services</p>
+                <div className="pl-4 space-y-1">
+                    <h5 className="flex pl-4 gap-2 items-center">
+                        <p className="bg-blue-600 text-white px-2 rounded-full text-xs">NEW</p>
+                        <p className="text-xs">BRINGING HOPE AND JOY DAILY</p>
+                    </h5>
+                    <h1 className="text-5xl font-thin">GET HIGH QUALITY</h1>
+                </div>
+                <div className="space-y-8 p-4">
+                    <p className="text-8xl font-semibold">Medical Services</p>
                     <div className="text-lg text-gray-600">
                         <p>Access top-tier medical care from licensed professionals</p>
                         <p>anytime, anywhere through our online application</p>
                     </div>
-                    
-                    <button className="bg-gradient-to-r from-blue-600 to-teal-300 p-4 rounded-full text-white font-semibold text-xl" onClick={handleButton}>
-                        Book An Appointment
+
+                    {/* Call to Action Buttons */}
+                    <div className="flex gap-4 flex-wrap items-center">
+                        <button
+                            onClick={handleButton}
+                            className="bg-gradient-to-r from-blue-600 to-teal-300 p-4 rounded-full text-white font-semibold text-xl"
+                        >
+                            Book An Appointment
                         </button>
-                    
+                        <Link
+                            to="/doctors"
+                            className="border border-blue-500 text-blue-600 px-6 py-3 rounded-full font-semibold text-lg hover:bg-blue-50"
+                        >
+                            View Doctors
+                        </Link>
+                    </div>
+                    <div className="mt-4 text-red-600 font-semibold text-lg">
+                        🚨 Emergency? Call us now: <span className="underline">+91-9876543210</span>
+                    </div>
+
+                    {/* Trust Badges */}
+                    <div className="flex flex-wrap items-center gap-6 mt-6 text-gray-600 text-sm">
+                        <div className="flex items-center gap-2">✅ <span>100% Verified Doctors</span></div>
+                        <div className="flex items-center gap-2">📞 <span>24x7 Online Support</span></div>
+                        <div className="flex items-center gap-2">🏥 <span>500+ Clinics Connected</span></div>
+                    </div>
+
+                    {/* Stats */}
+                    <div className="flex items-center gap-10 mt-4">
+                        <div>
+                            <p className="text-2xl font-bold text-blue-600">15K+</p>
+                            <p className="text-sm text-gray-500">Appointments Booked</p>
+                        </div>
+                        <div>
+                            <p className="text-2xl font-bold text-blue-600">1K+</p>
+                            <p className="text-sm text-gray-500">Doctors Available</p>
+                        </div>
+                    </div>
+
+                    {/* Optional Testimonial */}
+                    <div className="mt-2 italic text-sm text-gray-500">
+                        “Booked my appointment in seconds. So smooth and reliable!” –{" "}
+                        <span className="font-semibold text-gray-700">Anjali P.</span>
+                    </div>
                 </div>
             </motion.div>
 
+            {/* Right-side Image and Cards */}
             <motion.div
                 initial={{ opacity: 0, scale: 0.9 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ duration: 1 }}
-                className="md-w-1/2 relative flex justify-center right-8 bottom-10 w-[600px]"
+                className="md-w-1/2 relative flex justify-center right-8 bottom-16 w-[600px]"
             >
                 <div className="relative w-[29rem] h-[39rem] rounded-t-[400px] overflow-hidden border-8 border-white shadow-xl z-10">
                     <img
