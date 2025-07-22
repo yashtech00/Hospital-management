@@ -1,7 +1,14 @@
 "use client";
 import { motion } from "framer-motion";
+import useGetMe from "../hooks/hook";
 
 export default function AppBar() {
+
+    const { authUser } = useGetMe();
+    console.log(authUser,"authuser");
+    
+
+
   return (
     <motion.div
       initial={{ y: -80, opacity: 0 }}

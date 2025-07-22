@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 
 export default function HowItWorks() {
   return (
-    <section className=" pb-40 text-center px-4 md:px-20 pt-32">
+    <section className=" pb-40 text-center px-4 md:px-20 pt-32 ">
       <h2 className="text-3xl md:text-4xl font-bold mb-4 text-white">How It Works?</h2>
       <p className="text-gray-400 max-w-2xl mx-auto mb-12">
         Book appointments with verified doctors in just a few simple steps — no long waits, no hassle. Here’s how you can get started:

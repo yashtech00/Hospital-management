@@ -1,7 +1,23 @@
 import { motion } from "framer-motion";
 import { Star } from "lucide-react";
+import { Link, useNavigate } from "react-router-dom";
+import useGetMe from "../hooks/hook";
 
 export default function Hero() {
+
+    const { authUser } = useGetMe();
+    const navigate = useNavigate();
+
+    const handleButton = () => {
+        if (!authUser) {
+            navigate("/signup");
+        } else {
+            navigate("/Appointments")
+        }
+    }
+
+
+
     return (
         <div className="relative text-white px-20 py-10 pt-14 flex flex-col md:flex-row items-center justify-between overflow-hidden">
             <motion.div
@@ -17,9 +33,11 @@ export default function Hero() {
                         <p>Access top-tier medical care from licensed professionals</p>
                         <p>anytime, anywhere through our online application</p>
                     </div>
-                    <button className="bg-gradient-to-r from-blue-600 to-teal-300 p-4 rounded-full text-white font-semibold text-xl">
+                    
+                    <button className="bg-gradient-to-r from-blue-600 to-teal-300 p-4 rounded-full text-white font-semibold text-xl" onClick={handleButton}>
                         Book An Appointment
-                    </button>
+                        </button>
+                    
                 </div>
             </motion.div>
 

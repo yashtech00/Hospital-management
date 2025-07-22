@@ -7,8 +7,8 @@ export default function DoctorAppointments() {
 
 
     return (
-        <div>
-            
+        <div className="text-white">
+            hello doctor appointments
         </div>
     )
 }
