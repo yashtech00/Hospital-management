@@ -68,7 +68,7 @@ export const PatientDetails = async (req: any, res: any) => {
 
 export const Doctors = async (req: any, res: any) => {
   try {
-    const doctor = await DoctorModel.find();
+    const doctor = await DoctorModel.find().populate("user","-password");
     return res.status(200).json({message:"fetched all doctors",data:doctor})
   } catch (e) {
     console.error(e);
