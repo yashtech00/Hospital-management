@@ -5,6 +5,7 @@ import axios from "axios";
 import useGetMe from "../hooks/hook";
 import toast from "react-hot-toast";
 import { useState } from "react";
+import BookingForm from "../components/BookingForm";
 
 interface DoctorProp {
   _id: string;
@@ -22,6 +23,7 @@ export default function Appointments() {
   const { authUser } = useGetMe();
 
   const [search, setSearch] = useState("");
+  const [isModelOpen, setIsModelOpen] = useState(false);
 
   const { data: doctors, isLoading } = useQuery<DoctorProp[]>({
     queryKey: ["doctors"],
@@ -65,10 +67,6 @@ export default function Appointments() {
   const handleClear = () => {
     setSearch("");
   }
-
-  
-
-
 
   return (
     <div className="min-h-screen bg-gray-100 py-10 px-6">
@@ -129,7 +127,7 @@ export default function Appointments() {
                 <motion.button
                   whileTap={{ scale: 0.95 }}
                   className="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-lg transition-all"
-                  onClick={handleBooking}
+                  onClick={()=>setIsModelOpen(true)}
                 >
                   Book Appointment
                 </motion.button>
@@ -139,6 +137,13 @@ export default function Appointments() {
           </div>
         )}
       </div>
+      {isModelOpen && (
+        <BookingForm
+        onClick={isModelOpen}
+        onClose={()=>setIsModelOpen(false)}
+      />
+      )}
+      
       </div>
   );
 }
