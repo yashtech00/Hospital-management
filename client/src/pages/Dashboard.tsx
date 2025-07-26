@@ -22,10 +22,10 @@ export default function DoctorDashboard() {
     }, [authUser]);
 
     const { data: doctor, isLoading, error } = useQuery({
-        queryKey: ["doctor", docId],
+        queryKey: ["doctorDetails", docId],
         queryFn: async () => {
             if (!docId) return null;
-            const res = await axios.get(`${BACKEND_URL}/api/user/doctor/${docId}`, {
+            const res = await axios.get(`${BACKEND_URL}/api/user/details/${docId}`, {
                 withCredentials: true,
             });
             return res.data.data;
@@ -37,16 +37,20 @@ export default function DoctorDashboard() {
         return (
             <LayoutWrapperSidebar>
                 <div className="text-center text-xl text-black h-screen bg-white">
-                    <p className="py-20">
-                        Loading...
-                    </p>
+                    <p className="py-20">Loading...</p>
                 </div>
             </LayoutWrapperSidebar>
-        )
+        );
     }
 
     if (error || !doctor) {
-        return <div className="text-center text-red-600">Error loading doctor data or doctor not found.</div>;
+        return (
+            <LayoutWrapperSidebar>
+                <div className="text-center text-red-600 py-20">
+                    Error loading doctor data or doctor not found.
+                </div>
+            </LayoutWrapperSidebar>
+        );
     }
 
     return (
