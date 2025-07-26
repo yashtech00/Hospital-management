@@ -10,11 +10,13 @@ export const DoctorDetails = async (req: any, res: any) => {
 
     if (!DoctorDetailParsed.success) {
       return res.status(404).json({ message: "Invalid info" });
-      }
-      
-      if (req.user.role !== "doctor") {
-          return res.status(404).json({ message: "User not allowed, you are not doctor" });
-      }
+    }
+
+    if (req.user.role !== "doctor") {
+      return res
+        .status(404)
+        .json({ message: "User not allowed, you are not doctor" });
+    }
 
     const { specialization, experience, availableDays } =
       DoctorDetailParsed.data;
@@ -45,10 +47,13 @@ export const PatientDetails = async (req: any, res: any) => {
     }
 
     if (req.user.role !== "patient") {
-      return res.status(403).json({ message: "User not allowed, you are not a patient" });
+      return res
+        .status(403)
+        .json({ message: "User not allowed, you are not a patient" });
     }
 
-    const { age, gender, address, bloodGroup, medicalHistory } = patientParsed.data;
+    const { age, gender, address, bloodGroup, medicalHistory } =
+      patientParsed.data;
 
     const patient = await PatientModel.create({
       user: req.user._id,
@@ -59,7 +64,9 @@ export const PatientDetails = async (req: any, res: any) => {
       medicalHistory,
     });
 
-    return res.status(200).json({ message: "Patient details added successfully", data: patient });
+    return res
+      .status(200)
+      .json({ message: "Patient details added successfully", data: patient });
   } catch (e) {
     console.error(e);
     return res.status(500).json({ message: "Internal server error" });
@@ -68,39 +75,75 @@ export const PatientDetails = async (req: any, res: any) => {
 
 export const Doctors = async (req: any, res: any) => {
   try {
-    const doctor = await DoctorModel.find().populate("user","-password");
-    return res.status(200).json({message:"fetched all doctors",data:doctor})
+    const doctor = await DoctorModel.find().populate("user", "-password");
+    return res
+      .status(200)
+      .json({ message: "fetched all doctors", data: doctor });
   } catch (e) {
     console.error(e);
     return res.status(500).json({ message: "Internal server error" });
   }
-}
+};
 
 export const Patients = async (req: any, res: any) => {
-  try { 
-    const patient = await PatientModel.find().populate("user","-password");
+  try {
+    const patient = await PatientModel.find().populate("user", "-password");
     res.status(200).json({ message: "fetched all patients", data: patient });
   } catch (e) {
     console.error(e);
 
-    return res.status(500).json({message:"Internal server error while fetching all Patients"})
-    
+    return res
+      .status(500)
+      .json({ message: "Internal server error while fetching all Patients" });
   }
-}
+};
 
-export const Doctor = async (req: any, res: any) => {
-  try {
-    const userId = req.params.id;
+export const UserDetails = async (req: any, res: any) => {
+  const userId = req.params.id;
 
-    const doctor = await DoctorModel.findOne({ user: userId }).populate("user", "-password");
+  if (req.user.role === "doctor") {
+    try {
+      const doctor = await DoctorModel.findOne({ user: userId }).populate(
+        "user",
+        "-password"
+      );
 
-    if (!doctor) {
-      return res.status(404).json({ message: "Doctor not found" });
+      if (!doctor) {
+        return res.status(404).json({ message: "Doctor not found" });
+      }
+
+      return res
+        .status(200)
+        .json({ message: "Fetch particular doctor", data: doctor });
+    } catch (e) {
+      console.error("Error in Doctor fetch:", e);
+      return res
+        .status(500)
+        .json({
+          message: "Internal server error while fetching doctor detail",
+        });
     }
+  } else {
+    try {
+      const patient = await PatientModel.findOne({ user: userId }).populate(
+        "user",
+        "-password"
+      );
 
-    return res.status(200).json({ message: "Fetch particular doctor", data: doctor });
-  } catch (e) {
-    console.error("Error in Doctor fetch:", e);
-    return res.status(500).json({ message: "Internal server error while fetching doctor detail" });
+      if (!patient) {
+        return res.status(404).json({ message: "Patient not found" });
+      }
+
+      return res
+        .status(200)
+        .json({ message: "Fetch particular patient", data: patient });
+    } catch (e) {
+      console.error("Error in Patient fetch:", e);
+      return res
+        .status(500)
+        .json({
+          message: "Internal server error while fetching patient detail",
+        });
+    }
   }
 };
