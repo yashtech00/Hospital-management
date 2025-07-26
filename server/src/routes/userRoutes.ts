@@ -12,6 +12,7 @@ router.post("/logout", Logout);
 router.post("/doctor", Authentication, DoctorDetails);
 router.get("/doctors", Authentication, Doctors);
 router.get("/doctor/:id", Authentication, Doctor);
+router.get("/patient/:id", Authentication, Doctor);
 router.get("/patients",Authentication, Patients);
 router.post("/patient", Authentication,PatientDetails);
 

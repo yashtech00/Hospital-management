@@ -28,9 +28,9 @@ export default function Signin() {
     onSuccess: (data) => {
       // console.log("Returned data:", data);
       if (data.data.role == "doctor") {
-        navigate("/doctorInfo")
+        navigate("/DoctorAppointments")
       } else {
-        navigate("/patientInfo")
+        navigate("/Appointment")
       }
     }
   });

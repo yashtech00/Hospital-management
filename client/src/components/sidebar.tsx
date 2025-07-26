@@ -1,8 +1,11 @@
 import { NavLink, useNavigate } from "react-router-dom";
 import { LayoutDashboard, CalendarDays, LogOut } from "lucide-react";
+import useGetMe from "../hooks/hook";
 
 export default function Sidebar() {
   const navigate = useNavigate();
+
+  const { authUser } = useGetMe();
 
   const handleLogout = () => {
     // Clear tokens, user data, etc. (example)
@@ -20,7 +23,7 @@ export default function Sidebar() {
       <ul className="space-y-4 font-medium flex-grow">
         <li>
           <NavLink
-            to="/DoctorDashboard"
+            to={authUser.user.role === "doctor" ? `/DoctorDashboard` : `/PatientDashboard`}
             className={({ isActive }) =>
               `flex items-center space-x-3 px-4 py-2 rounded-lg transition-all w-full text-left 
               ${isActive ? "bg-teal-600" : "hover:bg-teal-600"}`
@@ -32,7 +35,7 @@ export default function Sidebar() {
         </li>
         <li>
           <NavLink
-            to="/DoctorAppointments"
+            to={authUser.user.role === "doctor" ? "/DoctorAppointments" : `/Appointments`}
             className={({ isActive }) =>
               `flex items-center space-x-3 px-4 py-2 rounded-lg transition-all w-full text-left 
               ${isActive ? "bg-teal-600" : "hover:bg-teal-600"}`

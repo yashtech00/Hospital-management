@@ -12,27 +12,28 @@ import DoctorDashboard from './pages/Dashboard'
 import Appointments from './pages/Appointments'
 import { Toaster } from 'react-hot-toast'
 import useGetMe from './hooks/hook'
+import PatientDashboard from './pages/PatientDashboard'
 
 
 function App() {
 
   const { authUser } = useGetMe();
 
-
-
   return (
     <div className="h-full bg-teal-50">
   <BrowserRouter>
     <Routes>
-          <Route path="/" element={<Home />} />
+          <Route path="/" element={ <Home />} />
           <Route path="/signup" element={<Signup />} />
           <Route path="/signin" element={<Signin />} />
           <Route path='/doctorInfo' element={<DoctorInfo />} />
           <Route path='/patientInfo' element={<PatientInfo/>} />
-          <Route path="/Appointment" element={<Appointments />} />
-          <Route path='/DoctorAppointments' element={<DoctorAppointments />} />
-          <Route path='/DoctorDashboard' element={ <DoctorDashboard/>} />
-        </Routes>
+          <Route path="/Appointment" element={authUser ? <Appointments /> : <Home />}/>
+          <Route path='/DoctorAppointments' element={authUser ? <DoctorAppointments />: <Home/>} />
+          <Route path='/DoctorDashboard' element={authUser? <DoctorDashboard/>:<Home/>} />
+        
+          <Route path='/PatientDashboard' element={authUser ? <PatientDashboard /> : <Home />} />
+    </Routes>
          <Toaster position="bottom-center" toastOptions={{
         className: "bg-violet-500 text-white",
         duration: 2000,
